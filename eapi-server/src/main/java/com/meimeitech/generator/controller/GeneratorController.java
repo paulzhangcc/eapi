@@ -138,6 +138,7 @@ public class GeneratorController {
 
             return Response.success(l + "");
         } catch (Exception e) {
+            e.printStackTrace();
             return Response.error("生成失败:" + e.getMessage());
         }
     }
