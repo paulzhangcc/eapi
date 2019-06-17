@@ -54,6 +54,9 @@ import java.util.concurrent.Callable;
 {{/jdk8}}
 import io.swagger.annotations.*;
 import com.paul.platform.common.utils.ResultUtil;
+import com.paul.platform.common.annotation.SystemLog;
+import com.paul.platform.common.enums.LogType;
+
 {{>generatedAnnotation}}
 
 /**
@@ -72,6 +75,7 @@ public class {{classname}}Controller{
     /**
      *  {{{notes}}}
      */
+    @SystemLog(description = "{{{summary}}}", type = LogType.OPERATION)
     @ApiOperation(value = "{{{summary}}}", notes = "{{{notes}}}")
     @RequestMapping(value = "{{{path}}}",{{#singleContentTypes}}{{#hasProduces}}produces = "{{{vendorExtensions.x-accepts}}}",{{/hasProduces}}{{#hasConsumes}}consumes = "{{{vendorExtensions.x-contentType}}}",{{/hasConsumes}}{{/singleContentTypes}}{{^singleContentTypes}}{{#hasProduces}}produces = { {{#produces}}"{{{mediaType}}}"{{#hasMore}},{{/hasMore}}{{/produces}} },{{/hasProduces}}{{#hasConsumes}}consumes = { {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} },{{/hasConsumes}}{{/singleContentTypes}}method = RequestMethod.{{httpMethod}})
     public Result<{{>returnTypes}}> {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}) {
