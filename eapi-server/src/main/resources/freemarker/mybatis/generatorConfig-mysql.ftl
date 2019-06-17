@@ -16,6 +16,8 @@
             <property name="classSuffix" value="VO"/>
         </plugin>
     </#if>
+        <plugin type="com.meimeitech.generator.tools.mybatis.plugin.SwaggerPlugin">
+        </plugin>
         <plugin type="com.meimeitech.generator.tools.mybatis.plugin.LombokPlugin">
         </plugin>
 

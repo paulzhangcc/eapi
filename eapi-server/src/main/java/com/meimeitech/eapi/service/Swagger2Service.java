@@ -126,7 +126,7 @@ public class Swagger2Service {
         UserSession user = UserContextHolder.getContext();
 
         // 删掉原来项目
-        projectService.deleteContent(projectId);
+        //projectService.deleteContent(projectId);
 
         // 添加标签
         swagger2Eapi.tagSetToTagList(output.getTags(), projectId, user.getId().toString(), user.getLoginName());
