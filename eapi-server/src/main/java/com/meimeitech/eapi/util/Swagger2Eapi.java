@@ -3,42 +3,35 @@ package com.meimeitech.eapi.util;
 import com.google.common.collect.Lists;
 import com.meimeitech.eapi.consts.ParamInConsts;
 import com.meimeitech.eapi.consts.ResponseInConsts;
-import com.meimeitech.eapi.entity.DataModel;
-import com.meimeitech.eapi.entity.Interface;
-import com.meimeitech.eapi.entity.RequestInfo;
-import com.meimeitech.eapi.entity.ResponseInfo;
+import com.meimeitech.eapi.entity.*;
 import com.meimeitech.eapi.model.Parameters;
 import com.meimeitech.eapi.model.Properties;
 import com.meimeitech.eapi.repository.*;
 import io.swagger.models.*;
+import io.swagger.models.Tag;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.properties.ArrayProperty;
 import io.swagger.models.properties.ObjectProperty;
 import io.swagger.models.properties.Property;
 import io.swagger.models.properties.RefProperty;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.meimeitech.eapi.consts.DataModelType.CUSTOM_TYPE;
 import static com.meimeitech.eapi.consts.DataModelType.UNIT_TYPE;
-import static com.meimeitech.eapi.util.JpaSpecUtils.eq;
-import static com.meimeitech.eapi.util.JpaSpecUtils.in;
-import static com.meimeitech.eapi.util.JpaSpecUtils.merge;
-import static org.springframework.util.CollectionUtils.isEmpty;
+import static com.meimeitech.eapi.util.JpaSpecUtils.*;
 
 @Component
 public class Swagger2Eapi {
 
-
+    public static final Logger LOGGER = LoggerFactory.getLogger(Swagger2Eapi.class);
 
     @Autowired
     private DataModelRepository dataModelRepository;
@@ -57,8 +50,16 @@ public class Swagger2Eapi {
             return;
         }
         List<com.meimeitech.eapi.entity.Tag> newTags = Lists.newArrayList();
+        Map<String,String> tagMap = new HashMap<>();
+        tagRepository.findAllByProjectId(projectId).forEach(tag -> {
+            tagMap.put(tag.getName(),tag.getName());
+        });
 
         tags.forEach((tag) -> {
+            if (tagMap.containsKey(tag.getName())){
+                LOGGER.warn("导入时project[{}]存在tag[{}]",projectId,tag.getName());
+                return;
+            }
 
             com.meimeitech.eapi.entity.Tag newTag = new com.meimeitech.eapi.entity.Tag();
             newTag.setName(tag.getName());
@@ -80,12 +81,20 @@ public class Swagger2Eapi {
            return;
         }
         List<DataModel> dataModels = Lists.newArrayList();
+        Map<String,String> dataModelMap = new HashMap<>();
+        dataModelRepository.findByTypeAndProjectIdOrderByName(CUSTOM_TYPE,projectId).forEach(dataModel -> {
+            dataModelMap.put(dataModel.getName(),dataModel.getName());
+        });
 
         for (Map.Entry<String, Model> entry : map.entrySet()) {
             if (StringUtils.isEmpty(entry.getKey())) {
                 continue;
             }
             Model model = entry.getValue();
+            if (dataModelMap.containsKey(entry.getKey())){
+                LOGGER.warn("导入时project[{}]存在dataModel[{}]",projectId,entry.getKey());
+                continue;
+            }
 
             DataModel dataModel = new DataModel();
             dataModel.setName(entry.getKey());
@@ -131,6 +140,10 @@ public class Swagger2Eapi {
         List<RequestInfo> requestInfos = Lists.newArrayList();
 
         List<ResponseInfo> responseInfos = Lists.newArrayList();
+        Map<String,String> interfaceMap = new HashMap<>();
+        interfaceRepository.findAllByProjectIdOrderByPath(projectId).forEach(anInterface -> {
+            interfaceMap.put(anInterface.getPath(),anInterface.getPath());
+        });
 
         for (Map.Entry<String, Path> pathMap : map.entrySet()) {
 //            System.out.println("Key = " + pathMap.getKey() + ", Value = " + pathMap.getValue());
@@ -141,7 +154,10 @@ public class Swagger2Eapi {
             for (Map.Entry<HttpMethod, Operation> entry : operations.entrySet()) {
 //                System.out.println("Key = " + entry.getKey().name() + ", Value = " + entry.getValue());
                 Operation operation = entry.getValue();
-
+                if (interfaceMap.containsKey(pathMap.getKey())){
+                    LOGGER.warn("导入时project[{}]存在interface[{}]",projectId,pathMap.getKey());
+                    continue;
+                }
                 Interface _interface = new Interface();
                 _interface.setName(operation.getSummary());
                 _interface.setMethod(entry.getKey().name().toLowerCase());
