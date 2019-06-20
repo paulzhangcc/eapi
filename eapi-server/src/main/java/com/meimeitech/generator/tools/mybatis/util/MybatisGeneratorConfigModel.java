@@ -25,7 +25,7 @@ public class MybatisGeneratorConfigModel {
      * 是否生成vo
      */
     @Builder.Default
-    private String javaVoGeneratorFlag = "true";
+    private String javaVoGeneratorFlag = "false";
     /**
      * 是否生成model
      */

@@ -16,6 +16,16 @@ public class SwaggerConfigVO implements Serializable {
 
     private String library;
 
+    private boolean generateSupportingFiles;
+
+    public boolean isGenerateSupportingFiles() {
+        return generateSupportingFiles;
+    }
+
+    public void setGenerateSupportingFiles(boolean generateSupportingFiles) {
+        this.generateSupportingFiles = generateSupportingFiles;
+    }
+
     public String getLang() {
         return lang;
     }

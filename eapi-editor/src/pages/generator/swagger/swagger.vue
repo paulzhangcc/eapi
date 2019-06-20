@@ -18,13 +18,14 @@
 
 				<FormItem label="模板" prop="lang">
 					<Select v-model="swaggerConfig.lang" placeholder="请选择" @on-change="langChange">
-						<Option value="meimeitechSpring">meimeitechSpring</Option>
-						<Option value="axios-fetch">axios-fetch</Option>
+						<Option value="PaulSpring">PaulSpring</Option>
+						<Option value="typescript-axios">typescript-axios</Option>
 					</Select>
 				</FormItem>
 				<FormItem label="library" prop="library" v-if="springShow">
-					<Select v-model="swaggerConfig.library" placeholder="请选择">
+					<Select v-model="swaggerConfig.library" placeholder="请选择" @on-change="libraryChange">
 						<Option value="spring-boot">spring-boot</Option>
+						<Option value="spring-cloud">spring-cloud</Option>
 					</Select>
 				</FormItem>
 
@@ -59,8 +60,9 @@
 				swaggerConfig: {
 					apiPackage: "com.xxx.gen.swagger.controller",
 					modelPackage: "com.xxx.gen.swagger.model",
-					lang: "meimeitechSpring",
-					library: "spring-boot"
+					lang: "PaulSpring",
+					library: "spring-boot",
+                    generateSupportingFiles: false
 				},
 				formValidate: {
 					apiPackage: [
@@ -128,7 +130,7 @@
 		computed: {
 			springShow() {
 				// TODO 显示配置服务器获取
-				return this.swaggerConfig.lang === 'meimeitechSpring';
+				return this.swaggerConfig.lang === 'PaulSpring';
 			}
 		},
 		methods: {
@@ -137,11 +139,27 @@
 				if (!this.springShow) {
 					this.swaggerConfig.apiPackage =  '';
 					this.swaggerConfig.modelPackage =  '';
+                    this.swaggerConfig.generateSupportingFiles =  true;
 				} else {
+                    this.swaggerConfig.generateSupportingFiles =  false;
 					this.swaggerConfig.library =  'spring-boot';
 					this.packageInitFromConfig();
 				}
 			},
+            libraryChange(){
+                const  library = this.swaggerConfig.library;
+                const db = getStore(consts.GENERATOR_CONFIG);
+                if (!db) {
+                    return false;
+                }
+                let model = JSON.parse(db);
+                if (library=='spring-boot'){
+                    this.swaggerConfig.apiPackage = model.targetPackage + '.swagger.controller';
+				}else if (library=='spring-cloud'){
+                    this.swaggerConfig.apiPackage = model.targetPackage + '.swagger.feign';
+				}
+			}
+			,
 			packageInitFromDb() { // 自定义过的配置
 				const swaggerConfigDb = getStore(consts.SWAGGER_CONFIG + this.swaggerConfig.targetProjectId);
 				if (!swaggerConfigDb) {

@@ -130,7 +130,7 @@ public class GeneratorController {
                     .targetProject(targetProject)
                     .lang(swaggerConfigVO.getLang())
                     .library(swaggerConfigVO.getLibrary())
-                    .generateSupportingFiles(false)
+                    .generateSupportingFiles(swaggerConfigVO.isGenerateSupportingFiles())
                     .build().generatorController();
 
             // 根据项目Id压缩一份
