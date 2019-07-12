@@ -119,7 +119,7 @@ public class GeneratorController {
     public Response swagger(@RequestBody SwaggerConfigVO swaggerConfigVO) {
         try {
             String root = codeGenerateLocation() + File.separator + swaggerConfigVO.getTargetProjectId();
-            String targetProject = root + File.separator + swaggerConfigVO.getLang();
+            //String targetProject = root + File.separator + swaggerConfigVO.getLang();
 
             FileUtils.deleteDirectory(new File(root));
 
@@ -127,12 +127,22 @@ public class GeneratorController {
                     .swaggerJson(swaggerConfigVO.getTargetProject())
                     .apiPackage(swaggerConfigVO.getApiPackage())
                     .modelPackage(swaggerConfigVO.getModelPackage())
-                    .targetProject(targetProject)
+                    .targetProject(root + File.separator + swaggerConfigVO.getLang())
                     .lang(swaggerConfigVO.getLang())
                     .library(swaggerConfigVO.getLibrary())
                     .generateSupportingFiles(swaggerConfigVO.isGenerateSupportingFiles())
                     .build().generatorController();
-
+            if (!"typescript-axios".equals(swaggerConfigVO.getLang())){
+                Generator.builder()
+                        .swaggerJson(swaggerConfigVO.getTargetProject())
+                        .apiPackage("")
+                        .modelPackage("")
+                        .targetProject(root + File.separator + "typescript-axios")
+                        .lang("typescript-axios")
+                        .library("")
+                        .generateSupportingFiles(true)
+                        .build().generatorController();
+            }
             // 根据项目Id压缩一份
             ZipFileUtil.compressFiles2Zip(root);
 

@@ -322,8 +322,15 @@ public class CustomDefaultGenerator extends DefaultGenerator {
          */
 
     }
-
-
-
+    @Override
+    protected Map<String, Object> processOperations(CodegenConfig config, String tag, List<CodegenOperation> ops, List<Object> allModels) {
+        Map<String, Object> map = super.processOperations(config, tag, ops, allModels);
+        swagger.getTags().forEach(v->{
+            if (tag !=null && tag.toUpperCase().equals(v.getName().toUpperCase())){
+                map.put("tagDesc", v.getDescription());
+            }
+        });
+        return map;
+    }
 
 }

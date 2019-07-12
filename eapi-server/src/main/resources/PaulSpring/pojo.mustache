@@ -5,7 +5,8 @@
  */
 {{#jackson}}
 @JsonIgnoreProperties(ignoreUnknown = true)
-{{/jackson}}
+{{/jackson}}{{#description}}
+@ApiModel(description = "{{{description}}}"){{/description}}
 {{^useLombokBuilder}}
 @lombok.Builder
 @lombok.AllArgsConstructor
@@ -33,6 +34,7 @@ public class {{classname}}{{#parent}} extends {{{parent}}}{{/parent}}{{#serializ
     @JsonProperty("{{baseName}}"){{#withXml}}
     @JacksonXmlProperty({{#isXmlAttribute}}isAttribute = true, {{/isXmlAttribute}}{{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}localName = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}"){{/withXml}}
     {{/jackson}}
+    @ApiModelProperty(value = "{{{description}}}")
     {{#gson}}
     @SerializedName("{{baseName}}")
     {{/gson}}
@@ -100,7 +102,7 @@ public class {{classname}}{{#parent}} extends {{{parent}}}{{/parent}}{{#serializ
 
 {{/vars}}
     @Override
-    public boolean equals(java.lang.Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -133,7 +135,7 @@ public class {{classname}}{{#parent}} extends {{{parent}}}{{/parent}}{{#serializ
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
      */
-    private String toIndentedString(java.lang.Object o) {
+    private String toIndentedString(Object o) {
         if (o == null) {
             return "null";
         }
