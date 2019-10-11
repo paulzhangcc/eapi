@@ -22,7 +22,7 @@ public class SwaggerConsoleGen {
 
         long l = System.currentTimeMillis();
         String root = codeGenerateLocation() + File.separator + l;
-        File swaggerFile = new File("F:\\xiaohu\\udp-server\\src\\test\\resources\\swaggerCMD.json");
+        File swaggerFile = new File("F:\\xiaohu\\udp-server\\doc\\swagger.json");
         String springBoot = root + File.separator + "SpringBoot";
 
         String feign = root + File.separator + "Feign";
@@ -30,26 +30,26 @@ public class SwaggerConsoleGen {
 
         MyGenerator.builder()
                 .swaggerJson("file:///" + swaggerFile.getPath())
-                .targetPackage("com.xiaohu.udpserver.cmd")
+                .targetPackage("cn.xxx.business.gen")
                 .targetProject(springBoot)
                 .build().generatorController();
 
-        MyGenerator.builder()
-                .swaggerJson("file:///" + swaggerFile.getPath())
-                .targetPackage("cn.xxx.business.cmd")
-                .targetProject(springBoot)
-                .build().generatorController();
-
-        MyGenerator.builder()
-                .swaggerJson("file:///" + swaggerFile.getPath())
-                .targetPackage("cn.xxx.business.cmd")
-                .targetProject(feign)
-                .build().generatorFeignClient();
-
-        MyGenerator.builder()
-                .swaggerJson("file:///" + swaggerFile.getPath())
-                .targetProject(axios)
-                .build().generatorAxiosClient();
+//        MyGenerator.builder()
+//                .swaggerJson("file:///" + swaggerFile.getPath())
+//                .targetPackage("cn.xxx.business.gen")
+//                .targetProject(springBoot)
+//                .build().generatorController();
+//
+//        MyGenerator.builder()
+//                .swaggerJson("file:///" + swaggerFile.getPath())
+//                .targetPackage("cn.xxx.business.gen")
+//                .targetProject(feign)
+//                .build().generatorFeignClient();
+//
+//        MyGenerator.builder()
+//                .swaggerJson("file:///" + swaggerFile.getPath())
+//                .targetProject(axios)
+//                .build().generatorAxiosClient();
         System.out.println("生成目录:"+root);
     }
 }

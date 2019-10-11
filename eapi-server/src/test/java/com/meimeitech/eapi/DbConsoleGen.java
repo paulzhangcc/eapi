@@ -17,9 +17,9 @@ import static com.meimeitech.generator.controller.GeneratorController.codeGenera
 public class DbConsoleGen {
     public static void main(String[] args) {
 
-        String json2 = "{\"dbConnectionURL\":\"jdbc:mysql://127.0.0.1:3306/yu_admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&useInformationSchema=true\",\"dbUsername\":\"root\",\"dbPassword\":\"paul6329170!@#\",\"dbDriverClass\":\"com.mysql.jdbc.Driver\",\"targetPackage\":\"com.xiaohu.udpserver\",\"javaVoGeneratorFlag\":\"false\",\"tableList\":" +
+        String json = "{\"dbConnectionURL\":\"jdbc:mysql://123.56.0.93:3306/yu_admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&useInformationSchema=true\",\"dbUsername\":\"root\",\"dbPassword\":\"paul6329170!@#\",\"dbDriverClass\":\"com.mysql.jdbc.Driver\",\"targetPackage\":\"com.xiaohu.udpserver\",\"javaVoGeneratorFlag\":\"false\",\"tableList\":" +
                 "[" +
-                "{\"tableName\":\"yu_ebox_command_record\",\"domainObjectName\":\"EboxCommandRecord\"}," +
+                "{\"tableName\":\"yu_data_sw\",\"domainObjectName\":\"DataSw\"}," +
                 "]" +
                 "}";
 
@@ -38,7 +38,7 @@ public class DbConsoleGen {
                 "}";
 
                 
-        String json = "{\"dbConnectionURL\":\"jdbc:mysql://127.0.0.1:3306/yu_admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&useInformationSchema=true\",\"dbUsername\":\"root\",\"dbPassword\":\"paul6329170!@#\",\"dbDriverClass\":\"com.mysql.jdbc.Driver\",\"targetPackage\":\"cn.xxx.business\",\"javaVoGeneratorFlag\":\"false\",\"tableList\":" +
+        String json2 = "{\"dbConnectionURL\":\"jdbc:mysql://123.56.0.93:3306/yu_admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&useInformationSchema=true\",\"dbUsername\":\"root\",\"dbPassword\":\"paul6329170!@#\",\"dbDriverClass\":\"com.mysql.jdbc.Driver\",\"targetPackage\":\"cn.xxx.business\",\"javaVoGeneratorFlag\":\"false\",\"tableList\":" +
                 "[" +
                 "{\"tableName\":\"yu_ebox_command_record\",\"domainObjectName\":\"EboxCommandRecord\"}," +
                 "{\"tableName\":\"yu_ebox_department\",\"domainObjectName\":\"EboxDepartment\"}," +

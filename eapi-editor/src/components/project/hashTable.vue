@@ -3,8 +3,10 @@
       <Icon type="md-arrow-dropup" style="position:relative;left:25%;top:-20px;font-size: 24px; z-index:2;color:#dddee1;" v-show="showIcon"></Icon>
       <Table :columns="columns10" :data="rows" class="datamodel-table"></Table>
       <Form ref="formInline" inline class="bottom-btn">
+        <Button type="dashed" size="small" @click="clearAll">清空</Button>&nbsp;
         <Button type="dashed" size="small" @click="importFromDatamodel = true">从数据模型导入</Button>&nbsp;
-        <Button type="dashed" size="small" @click="importFromJSON = true">从JSON导入</Button>
+        <Button type="dashed" size="small" @click="importFromJSON = true">从JSON导入</Button>&nbsp;
+
       </Form>
 
       <Modal v-model="importFromDatamodel"
@@ -329,6 +331,10 @@
         };
       },
       methods: {
+        clearAll(){
+            this.rows.splice(0,this.rows.length);
+            this.$Message.success('全部清理成功！');
+        },
         init() {
           if (this.isArrayItem) {
             this.columns10.splice(-1);
